@@ -228,6 +228,23 @@ public class CallKit extends CordovaPlugin {
 
         /* do nothing... */
 
+         cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cordova.getActivity().getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                );
+            }
+        });
+
+        if(wakeLock.isHeld()) {
+            wakeLock.release();
+        }
+        wakeLock.acquire();
+
         callbackContext.success(uuid);
     }
 
